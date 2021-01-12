@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Microsoft To-Do is a great tool for allowing you to keep lists of tasks (to-do) across your personal and work life. This could be a something as simple as a shopping list or a project or anything that can be split down in to individual tasks.
+Microsoft To-Do is a great tool for allowing you to keep lists of tasks across your personal and work life. This could be a something as simple as a shopping list or a project or anything that can be split down into individual tasks.
 
 With the [release of the To-Do APIs in Microsoft Graph](https://docs.microsoft.com/en-gb/graph/todo-concept-overview), it is now possible to integrate with your To-Do tasks outside of To-Do.
 
@@ -14,7 +14,7 @@ Whilst you can set reminders against tasks in To-Do, wouldn't it be awesome to h
 
 ![](ToDo.png)
 
-In this article, we will go over how we can have Power Automate send your outstanding tasks daily in to Microsoft Teams. To achieve this, we will undertake the following:
+In this article, we will go over how we can have Power Automate send your outstanding tasks daily into Microsoft Teams. To achieve this, we will undertake the following:
 
 * Learn how to interact with the Microsoft Graph To-Do APIs in [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer)
 * Register an [Azure Active Directory app](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
@@ -23,7 +23,7 @@ In this article, we will go over how we can have Power Automate send your outsta
 
 ## Microsoft Graph To-Do APIs in Graph Explorer
 
-To understand how the Microsoft Graph To-Do API queries work, lets use [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer) to make a query against your own data. The first task is to select **Sign in to Graph Explorer**.
+To understand how the Microsoft Graph To-Do API queries work, let's use [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer) to make a query against your own data. The first task is to select **Sign in to Graph Explorer**.
 
 Once signed in, under the **Getting Started** section of **Sample queries** run the **my To Do task lists** query. This should run the query of `https://graph.microsoft.com/v1.0/me/todo/lists` and return your task lists.
 
@@ -63,7 +63,7 @@ With the app created, take note of the **Application (client) ID** as this will 
 
 ### Create a secret
 
-Next, we need to create a secret under **Certificates and secrets** on the left hand menu. To create a secret, select **New client secret** and give the secret a **Description** and when it **Expires**.
+Next, we need to create a secret under **Certificates and secrets** on the left-hand menu. To create a secret, select **New client secret** and give the secret a **Description** and when it **Expires**.
 
 ![](AADApp4.png)
 ![](AADApp5.png)
@@ -74,9 +74,9 @@ Next, we need to create a secret under **Certificates and secrets** on the left 
 
 ### Assign Microsoft Graph permissions
 
-Finally, we need to assign Microsoft Graph To-Do permissions to our app. This allows our app to query To-Do APIs in Microsoft Graph like we did in Microsoft Graph Explorer earlier.
+Finally, we need to assign Microsoft Graph To-Do permissions to our app. This allows our app to query To-Do APIs in Microsoft Graph as we did in Microsoft Graph Explorer earlier.
 
-Under **API permissions** on the left hand menu, select **Add a permission**.
+Under **API permissions** on the left-hand menu, select **Add a permission**.
 
 ![](AADApp7.png)
 
@@ -88,12 +88,12 @@ You should now see `Tasks.Read` under **Configured permissions**.
 
 ![](AADApp9.png)
 
-That is all we need to do here for now, but there is one final step to be done later on, so leave the page open in your browser.
+That is all we need to do here for now, but there is one final step to be done, later on, so leave the page open in your browser.
 
 ## Create Power Automate Custom Connector
-Moving over to [Power Automate](https://flow.microsoft.com), we need to create a Custom Connector. A Custom Connector is way of interfacing with APIs in specific ways, in our case - talking to Microsoft Graph and obtaining our list of tasks.
+Moving over to [Power Automate](https://flow.microsoft.com), we need to create a Custom Connector. A Custom Connector is a way of interfacing with APIs in specific ways, in our case - talking to Microsoft Graph and obtaining our list of tasks.
 
-To create a Custom Connector, go to **Data > Custom connectors** on the left hand menu in Power Automate. Here, select **New custom connector** and **Create from blank**
+To create a Custom Connector, go to **Data > Custom connectors** on the left-hand menu in Power Automate. Here, select **New custom connector** and **Create from blank**
 
 ![](PA.png)
 
@@ -123,7 +123,7 @@ We now need to create an **Action**. An **Action** is an operation that our conn
 Select **New action** and provide the action with the following:
 
 * **Summary**: A summary of what the action is doing e.g. `Get To-Do tasks`
-* **Description**: A more in depth description on what the action is doing e.g. `Get To-Do tasks for signed-in user`
+* **Description**: A more in-depth description on what the action is doing e.g. `Get To-Do tasks for signed-in user`
 * **Operation ID**: Unique identifier of the action. Use `GetToDoTasks`
 * **Visibility**: `Important`
 
@@ -150,7 +150,7 @@ If we now briefly head back to the Azure AD App with the **Redirect URI**. Under
 ## Create Power Automate Flow
 Now we are going to tie everything together with a Power Automate Flow. A Flow is essentially a *no/low code* way to script something. In our case, we are scripting retrieving our To-Do tasks and sending them in to Microsoft Teams.
 
-To do this, head back the [Power Automate](https://flow.microsoft.com) and select **Create** from the left hand menu and choose **Scheduled cloud flow**.
+To do this, head back the [Power Automate](https://flow.microsoft.com) and select **Create** from the left-hand menu and choose **Scheduled cloud flow**.
 
 ![](PA8.png)
 
@@ -160,7 +160,7 @@ Give your flow a **Name** and set a **Repeat every** of `1 Day`. Once done, sele
 
 ![](PA9.png)
 
-As this is a Flow, the logic will behave like a flow chart would. Under the **Recurrance** trigger, we need to add some additional steps to the Flow.
+As this is a Flow, the logic will behave as a flow chart would. Under the **Recurrance** trigger, we need to add some additional steps to the Flow.
 
 To start, select **New step** and here we need to find the action we created. The quickest way is to change the type to **Custom** and then select it under **Actions**.
 
@@ -180,7 +180,7 @@ Before we go any further, select **Save** at the top of the page and then go bac
 
 ![](PA13.png)
 
-Hopefully it was successful and you can see the result in the **Flow Runs Page**. 
+Hopefully, it was successful and you can see the result in the **Flow Runs Page**. 
 
 ![](PA14.png)
 
@@ -200,7 +200,7 @@ The next step we need to add is **Initialize variable**. We need to create an Ar
 
 ![](PA18.png)
 
-After creating the `Tasks` array, we need to populate it with the tasks. This is achieved by adding a **Apply to each** step. A **Apply to each** is a type of loop. In our case, it will loop through all the tasks in our body JSON we parsed earlier and pick out the values for each task. Start by adding a **Apply to each** loop and selecting `value` output from **Parse JSON**
+After creating the `Tasks` array, we need to populate it with the tasks. This is achieved by adding an **Apply to each** step. A **Apply to each** is a type of loop. In our case, it will loop through all the tasks in our body JSON we parsed earlier and pick out the values for each task. Start by adding an **Apply to each** loop and selecting `value` output from **Parse JSON**
 
 ![](PA19.png)
 
@@ -208,13 +208,13 @@ Next, within the **Apply to each** step, **Add an action** and choose **Compose*
 
 ![](PA20.png)
 
-The next step we need to add in the loop is a **Append to array variable**. We will use this to add the task `title` to the `Tasks` array we created earlier. Set the **Value** to the `Outputs` of **Compose**.
+The next step we need to add in the loop is an **Append to array variable**. We will use this to add the task `title` to the `Tasks` array we created earlier. Set the **Value** to the `Outputs` of **Compose**.
 
 ![](PA21.png)
 
 Now we should have a list of tasks ready to use. The next step is to send these to us in Teams. To do this, we need to add **Post a choice of options as the Flow bot to a user**, making sure this is added after the **Apply to each** and not inside it.
 
-Before entering any details, change the options type to array by clicking the `T` icon.
+Before entering any details, change the options type to an array by clicking the `T` icon.
 
 ![](PA22.png)
 
@@ -232,11 +232,11 @@ If you were to run the Flow now, you will see the list of tasks appear in Teams.
 
 ![](Teams.png)
 
-Back in the Flow, we need to fix it so when an option (task) is chosen, we do somehting with it. Add another **Apply to each** and like the previous loop, select `value` output from **Parse JSON**.
+Back in the Flow, we need to fix it so when an option (task) is chosen, we do something with it. Add another **Apply to each** and like the previous loop, select `value` output from **Parse JSON**.
 
 ![](PA24.png)
 
-Within this **Apply to each** step, **Add an action** and choose **Condition**. A **Condition** is a way to verifying a value is what we want/don't want. In our scenario, we are looping through tasks and looking for the one that matches what the user selected in Teams. To do this set the first value as `selectedOption` under **Post a choice...** and second value is `title` under **Parse JSON**.
+Within this **Apply to each** step, **Add an action** and choose **Condition**. A **Condition** is a way to verifying a value is what we want/don't want. In our scenario, we are looping through tasks and looking for the one that matches what the user selected in Teams. To do this set the first value as `selectedOption` under **Post a choice...** and the second value is `title` under **Parse JSON**.
 
 ![](PA25.png)
 
@@ -261,4 +261,4 @@ Choosing a task will then return details on that task.
 
 ![](Teams3.png)
 
-Congratultions, you have now managed create and Azure AD application, talk to Microsoft Graph, pass that in to Power Automate and on to Teams!
+Congratulations, you have now managed create an Azure AD application, talk to Microsoft Graph, pass that in to Power Automate and on to Teams!
