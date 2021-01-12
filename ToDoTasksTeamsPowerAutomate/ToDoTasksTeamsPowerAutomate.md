@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Microsoft To-Do is a great tool for allowing you to keep lists of tasks across your personal and work life. This could be a something as simple as a shopping list or a project or anything that can be split down into individual tasks.
+Microsoft To-Do is a great tool for allowing you to keep lists of tasks across your personal and work life. This could be something as simple as a shopping list or a project or anything that can be split down into individual tasks.
 
 With the [release of the To-Do APIs in Microsoft Graph](https://docs.microsoft.com/en-gb/graph/todo-concept-overview), it is now possible to integrate with your To-Do tasks outside of To-Do.
 
@@ -145,10 +145,10 @@ Finally, select **Create connector** at the top right. Once saved, go to the **S
 
 If we now briefly head back to the Azure AD App with the **Redirect URI**. Under **Authentication**, select **Add a platform** and paste the **Redirect URI** you copied into the **Redirect URIs** text box. Select **Configure** to add it.
 
-![](AADApp9.png)
+![](AADApp10.png)
 
 ## Create Power Automate Flow
-Now we are going to tie everything together with a Power Automate Flow. A Flow is essentially a *no/low code* way to script something. In our case, we are scripting retrieving our To-Do tasks and sending them in to Microsoft Teams.
+Now we are going to tie everything together with a Power Automate Flow. A Flow is essentially a *no/low code* way to script something. In our case, we are scripting retrieving our To-Do tasks and sending them into Microsoft Teams.
 
 To do this, head back the [Power Automate](https://flow.microsoft.com) and select **Create** from the left-hand menu and choose **Scheduled cloud flow**.
 
@@ -188,7 +188,7 @@ Looking at the **body** of the **Output** there is some data (which is the same 
 
 ![](PA15.png)
 
-The body output is great in JSON format, but we need to be able to split it down in to smaller chunks (tasks). To do this, we need to be able to parse (read) the JSON output. Add a **Parse JSON** step and set the **Content** as `Body`. To create a **Schema** choose **Generate from sample**.
+The body output is great in JSON format, but we need to be able to split it down into smaller chunks (tasks). To do this, we need to be able to parse (read) the JSON output. Add a **Parse JSON** step and set the **Content** as `Body`. To create a **Schema** choose **Generate from sample**.
 
 ![](PA16.png)
 
