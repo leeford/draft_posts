@@ -1,29 +1,31 @@
-# Get your To-Do tasks daily in Teams using Power Automate
+# Get your To Do tasks daily in Teams using Power Automate
 
 > This blog post is inspired by Ayca Bas's [excellent blog post](https://dev.to/azure/get-your-to-do-tasks-every-morning-on-microsoft-teams-using-azure-logic-apps-3ci1) on this subject using Azure Logic Apps instead of Power Automate
 
 ## Introduction
 
-Microsoft To-Do is a great tool for allowing you to keep lists of tasks across your personal and work life. This could be something as simple as a shopping list or a project or anything that can be split down into individual tasks.
+Microsoft To Do is a great tool for allowing you to keep lists of tasks across your personal and work life. This could be something as simple as a shopping list or a project or anything that can be split down into individual tasks.
 
-With the [release of the To-Do APIs in Microsoft Graph](https://docs.microsoft.com/en-gb/graph/todo-concept-overview), it is now possible to integrate with your To-Do tasks outside of To-Do.
+With the [release of the To Do APIs in Microsoft Graph](https://docs.microsoft.com/en-gb/graph/todo-concept-overview), it is now possible to integrate with your To Do tasks outside of To Do.
 
 ## A Helpful Reminder
 
-Whilst you can set reminders against tasks in To-Do, wouldn't it be awesome to have these surface outside of the To-Do app too? Before we start, make sure you have some pending tasks on your **Tasks** list in To-Do!
+Whilst you can set reminders against tasks in To Do, wouldn't it be awesome to have these surface outside of the To Do app too? Before we start, make sure you have some pending tasks on your **Tasks** list in To Do!
 
 ![](ToDo.png)
 
 In this article, we will go over how we can have Power Automate send your outstanding tasks daily into Microsoft Teams. To achieve this, we will undertake the following:
 
-* Learn how to interact with the Microsoft Graph To-Do APIs in [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer)
+* Learn how to interact with the Microsoft Graph To Do APIs in [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer)
 * Register an [Azure Active Directory app](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
-* Create a Power Automate Custom Connector to interface with the Microsoft Graph To-Do APIs
+* Create a Power Automate Custom Connector to interface with the Microsoft Graph To Do APIs
 * Create a Power Automate Flow to automate sending tasks to Microsoft Teams using the Microsoft Teams Flow Bot
 
-## Microsoft Graph To-Do APIs in Graph Explorer
+## Microsoft Graph To Do APIs in Graph Explorer
 
-To understand how the Microsoft Graph To-Do API queries work, let's use [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer) to make a query against your own data. The first task is to select **Sign in to Graph Explorer**.
+To understand how the Microsoft Graph To Do API queries work, let's use [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer) to make a query against your own data. Microsoft Graph Explorer is a great web-based tool for using Microsoft Graph without having to create anything yourself. If you want to test something will work (before you create your app) or try out a new command, this is the quickest and easiest way to do so.
+
+The first task is to select **Sign in to Graph Explorer**.
 
 Once signed in, under the **Getting Started** section of **Sample queries** run the **my To Do task lists** query. This should run the query of `https://graph.microsoft.com/v1.0/me/todo/lists` and return your task lists.
 
@@ -43,7 +45,7 @@ Take a copy of your request address as we will need that later on.
 
 ## Register an app in Azure Active Directory
 
-To be able to read your To-Do task data using Microsoft Graph, we will need to grant an Azure AD application permission to access it.
+To be able to read your To Do task data using Microsoft Graph, we will need to grant an Azure AD application permission to access it.
 
 > This app registration can be used for more than one user, should you wish for multiple users to use this solution, the same registration can be used for each Power Automate Flow
 
@@ -53,7 +55,7 @@ First, go to **Azure Active Directory** in the [Azure Portal](https://portal.azu
 
 ![](AADApp.png)
 
-Give the app an arbitrary **Name** e.g. `To-Do_PowerAutomate`, leave **Supported account types** and **Redirect URI** with the default values. Select **Register** to create the app.
+Give the app an arbitrary **Name** e.g. `To Do_PowerAutomate`, leave **Supported account types** and **Redirect URI** with the default values. Select **Register** to create the app.
 
 ![](AADApp2.png)
 
@@ -68,19 +70,21 @@ Next, we need to create a secret under **Certificates and secrets** on the left-
 ![](AADApp4.png)
 ![](AADApp5.png)
 
-*Before* the next step, take a copy of the **Value** of the secret and store it securely somewhere.
+*Before* the next step, take a copy of the **Value** of the secret and store it securely somewhere. This has to be copied now as once we move away the secret value will be hidden.
 
 ![](AADApp6.png)
 
 ### Assign Microsoft Graph permissions
 
-Finally, we need to assign Microsoft Graph To-Do permissions to our app. This allows our app to query To-Do APIs in Microsoft Graph as we did in Microsoft Graph Explorer earlier.
+Finally, we need to assign Microsoft Graph To Do permissions to our app. This allows our app to query To Do APIs in Microsoft Graph as we did in Microsoft Graph Explorer earlier.
 
 Under **API permissions** on the left-hand menu, select **Add a permission**.
 
 ![](AADApp7.png)
 
 Select **Microsoft Graph** as the **Microsoft API** and **Delegated permissions**. Search for `Tasks` and choose the `Tasks.Read` permission and select **Add permissions**.
+
+> Tasks.Read is one of many different API permissions in Graph. Helpfully, there is a full breakdown of the different [Microsoft Graph permissions](https://docs.microsoft.com/en-us/graph/permissions-reference)
 
 ![](AADApp8.png)
 
@@ -97,7 +101,7 @@ To create a Custom Connector, go to **Data > Custom connectors** on the left-han
 
 ![](PA.png)
 
-Give your connector an arbitrary **Connector name** e.g. `To-Do_Connector` and choose **Continue**
+Give your connector an arbitrary **Connector name** e.g. `To Do_Connector` and choose **Continue**
 
 ![](PA2.png)
 
@@ -118,12 +122,12 @@ Select **Definition** to move on to the next step.
 
 ![](PA4.png)
 
-We now need to create an **Action**. An **Action** is an operation that our connector will perform when asked. In our case, our connector will retrieve our To-Do tasks for us.
+We now need to create an **Action**. An **Action** is an operation that our connector will perform when asked. In our case, our connector will retrieve our To Do tasks for us.
 
 Select **New action** and provide the action with the following:
 
-* **Summary**: A summary of what the action is doing e.g. `Get To-Do tasks`
-* **Description**: A more in-depth description on what the action is doing e.g. `Get To-Do tasks for signed-in user`
+* **Summary**: A summary of what the action is doing e.g. `Get To Do tasks`
+* **Description**: A more in-depth description on what the action is doing e.g. `Get To Do tasks for signed-in user`
 * **Operation ID**: Unique identifier of the action. Use `GetToDoTasks`
 * **Visibility**: `Important`
 
@@ -148,7 +152,7 @@ If we now briefly head back to the Azure AD App with the **Redirect URI**. Under
 ![](AADApp10.png)
 
 ## Create Power Automate Flow
-Now we are going to tie everything together with a Power Automate Flow. A Flow is essentially a *no/low code* way to script something. In our case, we are scripting retrieving our To-Do tasks and sending them into Microsoft Teams.
+Now we are going to tie everything together with a Power Automate Flow. A Flow is essentially a *no/low code* way to script something. In our case, we are scripting retrieving our To Do tasks and sending them into Microsoft Teams.
 
 To do this, head back the [Power Automate](https://flow.microsoft.com) and select **Create** from the left-hand menu and choose **Scheduled cloud flow**.
 
