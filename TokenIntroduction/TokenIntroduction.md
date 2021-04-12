@@ -4,7 +4,7 @@ Tokens are everywhere on the Internet. Even if you don't realise it, you may hav
 
 This article is here to break down the different types, how and when they are used and what a token is comprised of. Hopefully this article will help you better understand tokens and apply this to getting started with other technologies such as Microsoft Graph.
 
-# What is a Token?
+# What is a token?
 
 A token is a list claims of *something*. A real world analogy could be a receipt from a purchase of goods you made. Let's say you needed to prove that you bought to goods to return something. The receipt would most likely contain the date of purchase, the price you paid and most importantly, the goods purchased. Essentially, you are making a claim of ownership using the receipt. A token works in a similar way - it is a way to claim *"I am me"* or *"I am allowed to do this"*.
 
